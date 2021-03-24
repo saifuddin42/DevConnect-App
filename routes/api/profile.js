@@ -31,7 +31,7 @@ router.get('/me', auth, async (req, res) => {
 });
 
 /**
- * @route   POST api/profile/me
+ * @route   POST api/profile
  * @desc    Create or update a user's profile
  * @access  Private
  */
@@ -211,5 +211,61 @@ router.delete('/', auth, async (req, res) => {
     res.status(500).send('Profile Server error!');
   }
 });
+
+/**
+ * @route   PUT api/profile/experience
+ * @desc    Add profile experience
+ * @access  Private
+ */
+router.put(
+  '/experience',
+  [
+    //auth checks for a valid token
+    auth,
+    //express-validator checks body for correct  data being passed
+    [
+      check('title', 'Title is Required').not().isEmpty(),
+      check('company', 'Company is Required').not().isEmpty(),
+      check('from', 'Start Date is Required').not().isEmpty(),
+    ],
+  ],
+  async (req, res) => {
+    // Check for validation errors
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    const {
+      company,
+      location,
+      title,
+      from,
+      to,
+      current,
+      description,
+    } = req.body; // destructure everything from req.body
+
+    // Build Experience object
+    let newExp = { company, location, title, from, to, current, description };
+
+    // Now that the newExp are properly initialized, we can create the experience
+    try {
+      // Find the individual user profile
+      const profile = await Profile.findOne({ user: req.user.id }); // the user in here is the user field in the Profile schema
+
+      // Push the newExp into profile.experience array at the beginning using unshift()
+      profile.experience.unshift(newExp);
+
+      // save profile
+      await profile.save();
+
+      return res.json({ msg: 'Experience Added', profile: profile });
+    } catch (err) {
+      console.error('Error adding experience: ', err.message);
+      res.status(500).send('Profile Server error!');
+    }
+  }
+);
 
 module.exports = router;
