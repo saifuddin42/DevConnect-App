@@ -98,7 +98,7 @@ router.post(
       );
     } catch (err) {
       console.error("Couldn't register user. Error: ", err.message);
-      res.status(500).send('Server error!');
+      res.status(500).send('Users Server error!');
     }
   }
 );
