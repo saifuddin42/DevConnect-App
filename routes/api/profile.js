@@ -93,19 +93,19 @@ router.post(
     }
     // checking social needs extra steps cuz it has nested objects
     profileFields.social = {};
-    if (profileFields.social.youtube) {
+    if (youtube) {
       profileFields.social.youtube = youtube;
     }
-    if (profileFields.social.twitter) {
+    if (twitter) {
       profileFields.social.twitter = twitter;
     }
-    if (profileFields.social.instagram) {
+    if (instagram) {
       profileFields.social.instagram = instagram;
     }
-    if (profileFields.social.facebook) {
+    if (facebook) {
       profileFields.social.facebook = facebook;
     }
-    if (profileFields.social.linkedin) {
+    if (linkedin) {
       profileFields.social.linkedin = linkedin;
     }
 
