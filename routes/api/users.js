@@ -75,11 +75,12 @@ router.post(
           id: user.id, // get the _id from the mongodb data but mongoose abstracts _id with id
         },
       }; // Payload which contains data to verify the current user
+
       jwt.sign(
         payload,
         config.get('jwtSecret'),
         {
-          expiresIn: 360000, // set webToken timeout to expire user session
+          expiresIn: config.get('TIMEOUT'), // set webToken timeout to expire user session
         },
         // in the callback either get an err or a final token. if err exists then throw it else send token in res
         (err, token) => {
