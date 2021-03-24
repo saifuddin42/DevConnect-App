@@ -161,4 +161,32 @@ router.get('/', async (req, res) => {
   }
 });
 
+/**
+ * @route   GET api/profile/user/:user_id
+ * @desc    Get profile by user id
+ * @access  Public
+ */
+router.get('/user/:user_id', async (req, res) => {
+  try {
+    // Find the individual user profile
+    const profile = await Profile.findOne({ user: req.params.user_id }) // the user in here is the user field in the Profile schema! and the user_id is the parameter passed in the request url
+      .populate('user', ['name', 'avatar']); // populate the profile user field with name and avatar from user using their id
+
+    if (!profile) {
+      return res.status(400).json({ msg: "The user doesn't exist in the db" });
+    }
+
+    res.json({ msg: 'User Profile found', profile: profile });
+  } catch (err) {
+    // if the url_id syntax is entered incorrectly i.e. if it could never be an ObjectId (ex: api/profile/user/LOLIAMNOTID)
+    if (err.kind == 'ObjectId') {
+      return res.status(400).json({ msg: 'Profile not found' });
+    }
+
+    // for any other errors
+    console.error("Error loading the user's profile: ", err.message);
+    res.status(500).send('Profile Server error!');
+  }
+});
+
 module.exports = router;
