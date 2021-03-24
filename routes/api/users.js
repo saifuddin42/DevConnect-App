@@ -19,7 +19,7 @@ const config = require('config'); // import config to use the secret key while s
  */
 router.post(
   '/',
-  // Added validation checks for user object in the req body
+  // Added validation checks for user
   [
     check('name', 'Name is required').not().isEmpty(),
     check('email', 'Please enter a valid email address').isEmail(),
