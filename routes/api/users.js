@@ -7,6 +7,9 @@ const User = require('../../models/User'); // import User model
 const gravatar = require('gravatar'); // import gravatar
 const bcrypt = require('bcryptjs'); // import bcrypt
 
+const jwt = require('jsonwebtoken');
+const config = require('config'); // import config to use the secret key while signing the jwt payload
+
 // Note: we use await keyword before anything that returns a Promise. Using Promises helps us eliminate the clutter of using .then()s
 
 /**
@@ -67,9 +70,31 @@ router.post(
       await user.save();
 
       // Return jsonwebtoken
-
-      console.log('User POST req sent: ', req.body);
-      res.send('User Registered to DB!');
+      const payload = {
+        user: {
+          id: user.id, // get the _id from the mongodb data but mongoose abstracts _id with id
+        },
+      }; // Payload which contains data to verify the current user
+      jwt.sign(
+        payload,
+        config.get('jwtSecret'),
+        {
+          expiresIn: 360000, // set webToken timeout to expire user session
+        },
+        // in the callback either get an err or a final token. if err exists then throw it else send token in res
+        (err, token) => {
+          if (err) {
+            console.error(
+              "User Registered but couldn't generate token. Error: ",
+              err.message
+            );
+            throw err;
+          }
+          console.log('User POST req sent: ', req.body);
+          //   res.send('User Registered to DB!');
+          res.json({ msg: 'User registered to DB!', token: token });
+        }
+      );
     } catch (err) {
       console.error("Couldn't register user. Error: ", err.message);
       res.status(500).send('Server error!');
