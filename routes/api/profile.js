@@ -139,4 +139,26 @@ router.post(
   }
 );
 
+/**
+ * @route   GET api/profile
+ * @desc    Get all user profiles
+ * @access  Public
+ */
+router.get('/', async (req, res) => {
+  try {
+    // Find the individual user profile
+    const profiles = await Profile.find() // the user in here is the user field in the Profile schema!
+      .populate('user', ['name', 'avatar']); // populate the profile user field with name and avatar from user using their id
+
+    if (!profiles) {
+      return res.status(400).json({ msg: 'There are no profiles in the db' });
+    }
+
+    res.json({ msg: 'Profiles found', profiles: profiles });
+  } catch (err) {
+    console.error('Error loading user profiles: ', err.message);
+    res.status(500).send('Profile Server error!');
+  }
+});
+
 module.exports = router;
