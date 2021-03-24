@@ -6,6 +6,9 @@ const app = express();
 // Connect to MongoDB
 connectDB();
 
+// Init Middleware
+app.use(express.json({ extended: false })); // use() to use request object (req) from the routes and perform operations & express,json() to parse json in the req body
+
 // simple endpoint for testing
 app.get('/', (req, res) => {
   res.send('API Running');
