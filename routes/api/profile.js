@@ -268,4 +268,31 @@ router.put(
   }
 );
 
+/**
+ * @route   DELETE api/profile/experience/:exp_id
+ * @desc    Delete user experience from profile
+ * @access  Private
+ */
+router.delete('/experience/:exp_id', auth, async (req, res) => {
+  //auth checks for a valid token
+  try {
+    // Find the particular user profile
+    const profile = await Profile.findOne({ user: req.user.id }); // the user in here is the user field in the Profile schema!
+
+    // Get the index for removing experience by using exp_id
+    const removeIndex = profile.experience
+      .map((item) => item.id)
+      .indexOf(req.params.exp_id);
+
+    profile.experience.splice(removeIndex, 1); // remove the element at the index
+
+    await profile.save();
+
+    res.json({ msg: 'Experience Deleted' });
+  } catch (err) {
+    console.error('Error deleting user: ', err.message);
+    res.status(500).send('Profile Server error!');
+  }
+});
+
 module.exports = router;
