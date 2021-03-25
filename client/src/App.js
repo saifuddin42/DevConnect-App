@@ -10,16 +10,16 @@ import Login from './components/auth/Login';
 const App = () => {
   return (
     <Router>
-      <Fragment>
+      <>
         <Navbar />
-        <Route exact path="/" component={Landing} />
-        <section className="container">
-          <Switch>
+        <Switch>
+          <Route exact path="/" component={Landing} />
+          <section className="container">
             <Route exact path="/register" component={Register} />
             <Route exact path="/login" component={Login} />
-          </Switch>
-        </section>
-      </Fragment>
+          </section>
+        </Switch>
+      </>
     </Router>
   );
 };
