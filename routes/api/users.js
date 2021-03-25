@@ -10,6 +10,9 @@ const bcrypt = require('bcryptjs'); // import bcrypt
 const jwt = require('jsonwebtoken');
 const config = require('config'); // import config to use the secret key while signing the jwt payload
 
+// bring in normalize to give us a proper url, regardless of what user entered
+const normalize = require('normalize-url');
+
 // Note: we use await keyword before anything that returns a Promise. Using Promises helps us eliminate the clutter of using .then()s
 
 /**
@@ -48,11 +51,14 @@ router.post(
       }
 
       // Get user's gravatar
-      const avatar = gravatar.url(email, {
-        s: '200', //default size
-        r: 'pg', // rating to avoid nsfw images
-        d: 'mm', //default image if no pic exists
-      });
+      const avatar = normalize(
+        gravatar.url(email, {
+          s: '200', //default size
+          r: 'pg', // rating to avoid nsfw images
+          d: 'mm', //default image if no pic exists
+        }),
+        { forceHttps: true }
+      );
 
       // Create instance of a user
       user = new User({
