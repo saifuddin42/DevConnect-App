@@ -11,7 +11,7 @@ const bcrypt = require('bcryptjs');
 
 /**
  * @route   GET api/auth
- * @desc    Test route
+ * @desc    Get user on successful validation
  * @access  Public
  */
 //This gets the user data on successful validation
