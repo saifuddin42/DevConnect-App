@@ -1,4 +1,5 @@
 import React, { Fragment, useState } from 'react';
+import axios from 'axios';
 
 const Register = () => {
   // to keep track of form state using useState() hook
@@ -21,13 +22,39 @@ const Register = () => {
   };
 
   // onSubmit function for the form
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
 
     if (password !== password2) {
       console.log('Passwords do not match');
-    } else {
-      console.log('Passwords match. formData = ', formData);
+    }
+    // register new user to database using axios request
+    else {
+      const newUser = {
+        name,
+        email,
+        password,
+      };
+
+      try {
+        // create header for request
+        const config = {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        };
+
+        // create body for request
+        const body = JSON.stringify(newUser);
+
+        //send a request to api and await a promise from axios
+        const res = await axios.post('/api/users', body, config); // didn't need to use full link because package,json has a proxy set up with http://localhost:5000
+
+        // log result from api
+        console.log(res);
+      } catch (err) {
+        console.error(err.response.data);
+      }
     }
   };
 
