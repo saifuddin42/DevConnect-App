@@ -7,6 +7,9 @@ const User = require('../../models/User');
 
 const { check, validationResult } = require('express-validator');
 
+const axios = require('axios'); // deprecated. change to axios
+const config = require('config');
+
 /**
  * @route   GET api/profile/me
  * @desc    Get curent user's profile
@@ -384,6 +387,31 @@ router.delete('/education/:edu_id', auth, async (req, res) => {
   } catch (err) {
     console.error('Error deleting education: ', err.message);
     res.status(500).send('Profile Server error!');
+  }
+});
+
+/**
+ * @route   GET api/profile/github/:username
+ * @desc    Get user repos from github
+ * @access  Public
+ */
+router.get('/github/:username', async (req, res) => {
+  try {
+    const uri = encodeURI(
+      `https://api.github.com/users/${req.params.username}/repos?per_page=5&sort=created:asc`
+    );
+
+    const headers = {
+      'user-agent': 'node.js',
+      Authorization: `token ${config.get('githubToken')}`,
+    };
+
+    const gitHubResponse = await axios.get(uri, { headers });
+
+    return res.json({ msg: 'Repos Fetched', repos: gitHubResponse.data });
+  } catch (err) {
+    console.error('Error fetching github repos: ', err.message);
+    res.status(404).send('No github profile found for this username');
   }
 });
 
