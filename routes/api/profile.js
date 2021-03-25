@@ -7,8 +7,11 @@ const User = require('../../models/User');
 
 const { check, validationResult } = require('express-validator');
 
-const axios = require('axios'); // deprecated. change to axios
+const axios = require('axios'); // request deprecated. change to axios
 const config = require('config');
+
+// bring in normalize to give us a proper url, regardless of what user entered
+const normalize = require('normalize-url');
 
 /**
  * @route   GET api/profile/me
@@ -70,47 +73,27 @@ router.post(
     } = req.body; // destructure everything from req.body
 
     // Build Profile object while handling cases if the all profile attributes were passed or not
-    let profileFields = {};
-    profileFields.user = req.user.id;
-    if (company) {
-      profileFields.company = company;
-    }
-    if (website) {
-      profileFields.website = website;
-    }
-    if (location) {
-      profileFields.location = location;
-    }
-    if (bio) {
-      profileFields.bio = bio;
-    }
-    if (status) {
-      profileFields.status = status;
-    }
-    if (githubusername) {
-      profileFields.githubusername = githubusername;
-    }
-    if (skills) {
-      // convert the incoming string "html,   css,js" to a proper array like ['html', 'css', 'js']
-      profileFields.skills = skills.split(',').map((skill) => skill.trim());
-    }
+    const profileFields = {
+      user: req.user.id,
+      company,
+      location,
+      website: website === '' ? '' : normalize(website, { forceHttps: true }),
+      bio,
+      skills: Array.isArray(skills)
+        ? skills
+        : skills.split(',').map((skill) => ' ' + skill.trim()),
+      status,
+      githubusername,
+    };
+
+    const socialfields = { youtube, twitter, instagram, linkedin, facebook };
+
     // checking social needs extra steps cuz it has nested objects
-    profileFields.social = {};
-    if (youtube) {
-      profileFields.social.youtube = youtube;
+    for (const [key, value] of Object.entries(socialfields)) {
+      if (value.length > 0)
+        socialfields[key] = normalize(value, { forceHttps: true });
     }
-    if (twitter) {
-      profileFields.social.twitter = twitter;
-    }
-    if (instagram) {
-      profileFields.social.instagram = instagram;
-    }
-    if (facebook) {
-      profileFields.social.facebook = facebook;
-    }
-    if (linkedin) {
-      profileFields.social.linkedin = linkedin;
-    }
+    profileFields.social = socialfields;
 
     // Now that the profileFields are properly initialized, we can create or update profile
     try {
