@@ -1,5 +1,6 @@
 import React, { Fragment, useState } from 'react';
-import axios from 'axios';
+import { Link } from 'react-router-dom';
+// import axios from 'axios';
 
 const Register = () => {
   // to keep track of form state using useState() hook
@@ -27,35 +28,37 @@ const Register = () => {
 
     if (password !== password2) {
       console.log('Passwords do not match');
+    } else {
+      console.log('Success');
     }
-    // register new user to database using axios request
-    else {
-      const newUser = {
-        name,
-        email,
-        password,
-      };
+    // // register new user to database using axios request
+    // else {
+    //   const newUser = {
+    //     name,
+    //     email,
+    //     password,
+    //   };
 
-      try {
-        // create header for request
-        const config = {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        };
+    //   try {
+    //     // create header for request
+    //     const config = {
+    //       headers: {
+    //         'Content-Type': 'application/json',
+    //       },
+    //     };
 
-        // create body for request
-        const body = JSON.stringify(newUser);
+    //     // create body for request
+    //     const body = JSON.stringify(newUser);
 
-        //send a request to api and await a promise from axios
-        const res = await axios.post('/api/users', body, config); // didn't need to use full link because package,json has a proxy set up with http://localhost:5000
+    //     //send a request to api and await a promise from axios
+    //     const res = await axios.post('/api/users', body, config); // didn't need to use full link because package,json has a proxy set up with http://localhost:5000
 
-        // log result from api
-        console.log(res);
-      } catch (err) {
-        console.error(err.response.data);
-      }
-    }
+    //     // log result from api
+    //     console.log(res);
+    //   } catch (err) {
+    //     console.error(err.response.data);
+    //   }
+    // }
   };
 
   return (
@@ -114,7 +117,7 @@ const Register = () => {
         <input type="submit" className="btn btn-primary" value="Register" />
       </form>
       <p className="my-1">
-        Already have an account? <a href="login.html">Sign In</a>
+        Already have an account? <Link to="/login">Sign In</Link>
       </p>
     </Fragment>
   );
