@@ -1,8 +1,15 @@
 import React, { Fragment, useState } from 'react';
 import { Link } from 'react-router-dom';
-// import axios from 'axios';
 
-const Register = () => {
+// Redux
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { setAlert } from '../../actions/alert';
+
+const Register = (
+  // pull out setAlert from props
+  { setAlert }
+) => {
   // to keep track of form state using useState() hook
   // formData is the state and setFormData is a setState function for that state
   const [formData, setFormData] = useState({
@@ -27,38 +34,10 @@ const Register = () => {
     e.preventDefault();
 
     if (password !== password2) {
-      console.log('Passwords do not match');
+      setAlert('Passwords do not match', 'danger'); // sends msg and alertType to setAlert. danger keyword is for css
     } else {
       console.log('Success');
     }
-    // // register new user to database using axios request
-    // else {
-    //   const newUser = {
-    //     name,
-    //     email,
-    //     password,
-    //   };
-
-    //   try {
-    //     // create header for request
-    //     const config = {
-    //       headers: {
-    //         'Content-Type': 'application/json',
-    //       },
-    //     };
-
-    //     // create body for request
-    //     const body = JSON.stringify(newUser);
-
-    //     //send a request to api and await a promise from axios
-    //     const res = await axios.post('/api/users', body, config); // didn't need to use full link because package,json has a proxy set up with http://localhost:5000
-
-    //     // log result from api
-    //     console.log(res);
-    //   } catch (err) {
-    //     console.error(err.response.data);
-    //   }
-    // }
   };
 
   return (
@@ -123,4 +102,9 @@ const Register = () => {
   );
 };
 
-export default Register;
+Register.propTypes = {
+  setAlert: PropTypes.func.isRequired,
+};
+
+// connect(mapStateToProps, mapDispatchToProps)
+export default connect(null, { setAlert })(Register);
