@@ -1,6 +1,0 @@
-{
-    "mongoURI": "mongodb+srv://saifAdmin:saifusins69@cluster0.yy76b.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",
-    "jwtSecret": "mysecrettoken",
-    "TIMEOUT": 3600000,
-    "githubToken": "98be85c2397e115df6695a95ebf1ace7968da26d"
-}
