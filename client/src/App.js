@@ -18,11 +18,13 @@ const App = () => {
         <>
           <Navbar />
           <Switch>
-            <Route exact path="/" component={Landing} />
-            <section className="container">
-              <Route exact path="/register" component={Register} />
-              <Route exact path="/login" component={Login} />
-            </section>
+            <>
+              <Route exact path="/" component={Landing} />
+              <section className="container">
+                <Route exact path="/register" component={Register} />
+                <Route exact path="/login" component={Login} />
+              </section>
+            </>
           </Switch>
         </>
       </Router>
