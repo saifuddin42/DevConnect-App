@@ -1,12 +1,11 @@
-import api from './api';
+import axios from 'axios';
 
+// check if token exists and is yes then set it in the global header
 const setAuthToken = (token) => {
   if (token) {
-    api.defaults.headers.common['x-auth-token'] = token;
-    localStorage.setItem('token', token);
+    axios.defaults.headers.common['x-auth-token'] = token;
   } else {
-    delete api.defaults.headers.common['x-auth-token'];
-    localStorage.removeItem('token');
+    delete axios.defaults.headers.common['x-auth-token'];
   }
 };
 
