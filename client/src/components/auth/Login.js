@@ -1,7 +1,16 @@
 import React, { Fragment, useState } from 'react';
 import { Link } from 'react-router-dom';
 
-const Login = () => {
+// Redux
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { setAlert } from '../../actions/alert';
+import { login } from '../../actions/auth';
+
+const Login = (
+  // pull out from props
+  { setAlert, login }
+) => {
   // to keep track of form state using useState() hook
   // formData is the state and setFormData is a setState function for that state
   const [formData, setFormData] = useState({
@@ -23,7 +32,7 @@ const Login = () => {
   const onSubmit = async (e) => {
     e.preventDefault();
 
-    console.log('Success');
+    login({ email, password }); //login using form contents
   };
 
   return (
@@ -64,4 +73,11 @@ const Login = () => {
   );
 };
 
-export default Login;
+// validating the prop types and enforcing rules
+Login.propTypes = {
+  setAlert: PropTypes.func.isRequired,
+  login: PropTypes.func.isRequired,
+};
+
+// connect(mapStateToProps, mapDispatchToProps)
+export default connect(null, { setAlert, login })(Login);
