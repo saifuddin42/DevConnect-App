@@ -99,7 +99,7 @@ router.post(
           }
           console.log('User POST req sent: ', req.body);
           //   res.send('User Registered to DB!');
-          res.json({ msg: 'User registered to DB!', token: token });
+          res.json({ token });
         }
       );
     } catch (err) {

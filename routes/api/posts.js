@@ -20,7 +20,7 @@ router.get('/', auth, async (req, res) => {
     // find all posts and sort by date in descending order
     const posts = await Post.find().sort({ date: -1 });
 
-    res.json({ msg: 'Posts Fetched', post: posts });
+    res.json(posts);
   } catch (err) {
     console.error(err.message);
     res.status(500).send(' Posts Server Error');
@@ -41,7 +41,7 @@ router.get('/:id', auth, async (req, res) => {
       return res.status(404).json({ msg: 'Post not found' });
     }
 
-    res.json({ msg: 'Post Fetched', post: post });
+    res.json(post);
   } catch (err) {
     console.error(err.message);
 
@@ -83,7 +83,7 @@ router.post(
 
       const post = await newPost.save();
 
-      res.json({ msg: 'Post Created', post: post });
+      res.json(post);
     } catch (err) {
       console.error(err.message);
       res.status(500).send('Posts Server Error');
@@ -142,7 +142,7 @@ router.put('/like/:id', auth, async (req, res) => {
 
     await post.save();
 
-    res.json({ msg: 'Post Liked', post: post.likes });
+    res.json(post.likes);
   } catch (err) {
     console.error(err.message);
     res.status(500).send(' Posts Server Error');
@@ -175,7 +175,7 @@ router.put('/unlike/:id', auth, async (req, res) => {
 
     await post.save();
 
-    res.json({ msg: 'Post Unliked', post: post.likes });
+    res.json(post.likes);
   } catch (err) {
     console.error(err.message);
     res.status(500).send(' Posts Server Error');
@@ -212,7 +212,7 @@ router.post(
 
       await post.save();
 
-      res.json({ msg: 'Comment Posted', post: post.comments });
+      res.json(post.comments);
     } catch (err) {
       console.error(err.message);
       res.status(500).send(' Posts Server Error');
@@ -248,7 +248,7 @@ router.delete('/comment/:id/:comment_id', auth, async (req, res) => {
 
     await post.save();
 
-    res.json({ msg: 'Comment Deleted', post: post.comments });
+    res.json(post.comments);
   } catch (err) {
     console.error(err.message);
     res.status(500).send(' Posts Server Error');

@@ -29,7 +29,7 @@ router.get('/me', auth, async (req, res) => {
       return res.status(400).json({ msg: 'There is no profile for this user' });
     }
 
-    res.json({ msg: 'Profile found', profile: profile });
+    res.json(profile);
   } catch (err) {
     console.error('Error loading profile: ', err.message);
     res.status(500).send('Profile Server error!');
@@ -117,7 +117,7 @@ router.post(
       // Save the profile
       await profile.save();
 
-      return res.json({ msg: 'Profile Created', profile: profile });
+      return res.json(profile);
     } catch (err) {
       console.error('Error creating/updating profile: ', err.message);
       res.status(500).send('Profile Server error!');
@@ -140,7 +140,7 @@ router.get('/', async (req, res) => {
       return res.status(400).json({ msg: 'There are no profiles in the db' });
     }
 
-    res.json({ msg: 'Profiles found', profiles: profiles });
+    res.json(profiles);
   } catch (err) {
     console.error('Error loading user profiles: ', err.message);
     res.status(500).send('Profile Server error!');
@@ -162,7 +162,7 @@ router.get('/user/:user_id', async (req, res) => {
       return res.status(400).json({ msg: "The user doesn't exist in the db" });
     }
 
-    res.json({ msg: 'User Profile found', profile: profile });
+    res.json(profile);
   } catch (err) {
     // if the url_id syntax is entered incorrectly i.e. if it could never be an ObjectId (ex: api/profile/user/LOLIAMNOTID)
     if (err.kind == 'ObjectId') {
@@ -246,7 +246,7 @@ router.put(
       // save profile
       await profile.save();
 
-      return res.json({ msg: 'Experience Added', profile: profile });
+      return res.json(profile);
     } catch (err) {
       console.error('Error adding experience: ', err.message);
       res.status(500).send('Profile Server error!');
@@ -338,7 +338,7 @@ router.put(
       // save profile
       await profile.save();
 
-      return res.json({ msg: 'Education Added', profile: profile });
+      return res.json(profile);
     } catch (err) {
       console.error('Error adding education: ', err.message);
       res.status(500).send('Profile Server error!');
@@ -391,7 +391,7 @@ router.get('/github/:username', async (req, res) => {
 
     const gitHubResponse = await axios.get(uri, { headers });
 
-    return res.json({ msg: 'Repos Fetched', repos: gitHubResponse.data });
+    return res.json(gitHubResponse.data);
   } catch (err) {
     console.error('Error fetching github repos: ', err.message);
     res.status(404).send('No github profile found for this username');

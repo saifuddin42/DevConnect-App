@@ -21,7 +21,7 @@ router.get('/', auth, async (req, res) => {
     const user = await User.findById(req.user.id) // in the middleware i passed the user id in req.user on successful token validation
       .select('-password'); // do not include the password field in this user object
 
-    res.json({ msg: 'Authenticated user successfully', user: user });
+    res.json(user);
   } catch (err) {
     console.error('Error authenticating user: ', err.message);
     res.status(500).send('Error authenticating user');
@@ -99,7 +99,7 @@ router.post(
             throw err;
           }
           //   res.send('User Registered to DB!');
-          res.json({ msg: 'User Authenticated!', token: token });
+          res.json({ token });
         }
       );
     } catch (err) {
