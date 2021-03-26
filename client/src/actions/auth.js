@@ -1,5 +1,6 @@
 import api from '../utils/api';
 import { setAlert } from './alert';
+import setAuthToken from '../utils/setAuthToken';
 import {
   REGISTER_SUCCESS,
   REGISTER_FAIL,
@@ -14,7 +15,14 @@ import axios from 'axios';
 // Load User
 export const loadUser = () => async (dispatch) => {
   try {
-    const res = await api.get('/auth');
+    // if token exists in local storage
+    if (localStorage.token) {
+      // my utils function to set it to current header
+      setAuthToken(localStorage.token);
+    }
+
+    // get authenticated user using current token
+    const res = await axios.get('/api/auth');
 
     dispatch({
       type: USER_LOADED,
