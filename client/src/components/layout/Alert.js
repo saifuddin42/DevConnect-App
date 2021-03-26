@@ -6,9 +6,9 @@ const Alert = ({ alerts }) => {
   return (
     alerts !== null &&
     alerts.length > 0 &&
-    alerts.map((alert) => (
-      <div key={alert.id} className={`alert alert-${alert.alertType}`}>
-        {alert.msg}
+    alerts.map((a) => (
+      <div key={a.id} className={`alert alert-${a.alertType}`}>
+        {a.msg}
       </div>
     ))
   );
@@ -18,9 +18,9 @@ Alert.propTypes = {
   alerts: PropTypes.array.isRequired,
 };
 
-// get state inside alert reducer
+// Use when you want to fetch redux state into a component.
 const mapStateToProps = (state) => ({
-  alerts: state.alert,
+  alerts: state.alert, // mapping the redux state to the props in this component
 });
 
 export default connect(mapStateToProps)(Alert);
