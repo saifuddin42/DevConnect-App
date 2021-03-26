@@ -1,15 +1,14 @@
-import React, { Fragment, useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Link, Redirect } from 'react-router-dom';
 
 // Redux
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { setAlert } from '../../actions/alert';
 import { login } from '../../actions/auth';
 
 const Login = (
   // pull out from props
-  { setAlert, login }
+  { login, isAuthenticated }
 ) => {
   // to keep track of form state using useState() hook
   // formData is the state and setFormData is a setState function for that state
@@ -32,8 +31,13 @@ const Login = (
   const onSubmit = async (e) => {
     e.preventDefault();
 
-    login({ email, password }); //login using form contents
+    login(email, password); //login using form contents
   };
+
+  // Redirect if logged in
+  if (isAuthenticated) {
+    return <Redirect to="/dashboard" />;
+  }
 
   return (
     <>
@@ -75,9 +79,17 @@ const Login = (
 
 // validating the prop types and enforcing rules
 Login.propTypes = {
-  setAlert: PropTypes.func.isRequired,
   login: PropTypes.func.isRequired,
+  isAuthenticated: PropTypes.bool,
 };
 
+// Use when you want to fetch redux state into a component.
+const mapStateToProps = (state) => ({
+  // mapping the redux state to the props in this component
+  // auth: state.auth, // doing this will give me everything in the auth reducer component i.e. { token: localStorage.getItem('token'), isAuthenticated: null, loading: true, user: null,} but i just want the isAuthenticated
+  // so
+  isAuthenticated: state.auth.isAuthenticated, // and now since this is a prop i'll add it to proptypes for validity checks
+});
+
 // connect(mapStateToProps, mapDispatchToProps)
-export default connect(null, { setAlert, login })(Login);
+export default connect(mapStateToProps, { login })(Login);

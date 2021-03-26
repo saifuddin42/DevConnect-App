@@ -1,4 +1,3 @@
-import api from '../utils/api';
 import { setAlert } from './alert';
 import setAuthToken from '../utils/setAuthToken';
 import {
@@ -56,6 +55,7 @@ export const register = ({ name, email, password }) => async (dispatch) => {
       type: REGISTER_SUCCESS,
       payload: res.data,
     });
+
     dispatch(loadUser());
   } catch (err) {
     // get error message array
@@ -72,7 +72,7 @@ export const register = ({ name, email, password }) => async (dispatch) => {
 };
 
 // Login User
-export const login = ({ email, password }) => async (dispatch) => {
+export const login = (email, password) => async (dispatch) => {
   try {
     // create header for request
     const config = {
@@ -92,6 +92,7 @@ export const login = ({ email, password }) => async (dispatch) => {
       type: LOGIN_SUCCESS,
       payload: res.data,
     });
+
     dispatch(loadUser());
   } catch (err) {
     // get error message array
