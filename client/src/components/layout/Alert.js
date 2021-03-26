@@ -14,6 +14,7 @@ const Alert = ({ alerts }) => {
   );
 };
 
+// validating the prop types and enforcing rules
 Alert.propTypes = {
   alerts: PropTypes.array.isRequired,
 };
