@@ -41,6 +41,7 @@ function authReducer(state = initialState, action) {
     case LOGIN_FAIL:
     case AUTH_ERROR:
     case LOGOUT:
+    case ACCOUNT_DELETED:
       // remove the token from storage
       localStorage.removeItem('token');
       return {
@@ -48,14 +49,6 @@ function authReducer(state = initialState, action) {
         token: null,
         isAuthenticated: false,
         loading: false,
-      };
-    case ACCOUNT_DELETED:
-      return {
-        ...state,
-        token: null,
-        isAuthenticated: false,
-        loading: false,
-        user: null,
       };
     default:
       return state;

@@ -9,7 +9,6 @@ import {
   CLEAR_PROFILE,
   ACCOUNT_DELETED,
   GET_REPOS,
-  NO_REPOS,
 } from './types';
 
 // Get current users profile
@@ -137,6 +136,7 @@ export const deleteExperience = (id) => async (dispatch) => {
   try {
     const res = await axios.delete(`/api/profile/experience/${id}`);
 
+    dispatch({ type: CLEAR_PROFILE });
     dispatch({
       type: UPDATE_PROFILE,
       payload: res.data,
@@ -156,6 +156,7 @@ export const deleteEducation = (id) => async (dispatch) => {
   try {
     const res = await axios.delete(`/api/profile/education/${id}`);
 
+    dispatch({ type: CLEAR_PROFILE });
     dispatch({
       type: UPDATE_PROFILE,
       payload: res.data,

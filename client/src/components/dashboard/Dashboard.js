@@ -7,8 +7,7 @@ import DashboardActions from './DashboardActions';
 import Experience from './Experience';
 import Education from './Education';
 
-import { getCurrentProfile } from '../../actions/profile';
-import { deleteAccount } from '../../actions/profile';
+import { getCurrentProfile, deleteAccount } from '../../actions/profile';
 
 const Dashboard = ({
   getCurrentProfile,
@@ -29,7 +28,7 @@ const Dashboard = ({
         <i className="fas fa-user"></i> Welcome {user && user.name}
       </p>
       {profile !== null ? (
-        <>
+        <Fragment>
           <DashboardActions />
 
           <Experience experience={profile.experience} />
@@ -41,7 +40,7 @@ const Dashboard = ({
               <i className="fas fa-user-minus" /> Delete My Account
             </button>
           </div>
-        </>
+        </Fragment>
       ) : (
         <>
           <p>You have not yet setup a profile, please add some info</p>
