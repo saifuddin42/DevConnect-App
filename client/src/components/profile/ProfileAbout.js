@@ -13,15 +13,16 @@ const ProfileAbout = ({
     {bio && (
       <>
         {/* name of the user */}
-        <h2 className="text-primary">{name.trim().split(' ')[0]}s Bio</h2>
+        <h2 className="text-primary">{name.trim().split(' ')[0]}'s Bio</h2>
         <p>{bio}</p>
         <div className="line" />
       </>
     )}
-    <h2 className="text-primary">Skill Set</h2>
+    <h2 className="text-primary">Top Skill Set</h2>
     {/* map through all skills and print */}
+    {/* limit the skills to only 6 */}
     <div className="skills">
-      {skills.map((skill, index) => (
+      {skills.slice(0, 6).map((skill, index) => (
         <div key={index} className="p-1">
           <i className="fas fa-check" /> {skill}
         </div>

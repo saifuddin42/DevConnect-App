@@ -25,6 +25,9 @@ const ProfileItem = ({
         </Link>
       </div>
       <ul>
+        <li className="text-primary">
+          <b>Top Skills:</b>
+        </li>
         {/* limit the skills to only 6 */}
         {skills.slice(0, 6).map((skill, index) => (
           <li key={index} className="text-primary">
