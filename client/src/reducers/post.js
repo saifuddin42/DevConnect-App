@@ -69,6 +69,7 @@ function postReducer(state = initialState, action) {
         ...state,
         post: {
           ...state.post,
+          // set comments to all the comments except the one that just got deleted using its id
           comments: state.post.comments.filter(
             (comment) => comment._id !== payload
           ),
