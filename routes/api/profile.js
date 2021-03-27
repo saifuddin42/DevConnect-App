@@ -274,7 +274,7 @@ router.delete('/experience/:exp_id', auth, async (req, res) => {
 
     await profile.save();
 
-    res.json({ msg: 'Experience Deleted' });
+    res.json(profile);
   } catch (err) {
     console.error('Error deleting experience: ', err.message);
     res.status(500).send('Profile Server error!');
@@ -366,7 +366,7 @@ router.delete('/education/:edu_id', auth, async (req, res) => {
 
     await profile.save();
 
-    res.json({ msg: 'Education Deleted' });
+    res.json(profile);
   } catch (err) {
     console.error('Error deleting education: ', err.message);
     res.status(500).send('Profile Server error!');
