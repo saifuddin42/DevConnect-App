@@ -25,6 +25,8 @@ const PostItem = ({
       <p className="my-1">{text}</p>
       <p className="post-date">Posted on {formatDate(date)}</p>
 
+      {/* only show the buttons if it's in all posts else only show the post withouth the buttons */}
+      {/* implemented with wether showActions is true or not */}
       {showActions && (
         <>
           <button
@@ -42,7 +44,7 @@ const PostItem = ({
           >
             <i className="fas fa-thumbs-down" />
           </button>
-          <Link to={`/posts/${_id}`} className="btn btn-primary">
+          <Link to={`/post/${_id}`} className="btn btn-primary">
             Discussion{' '}
             {comments.length > 0 && (
               <span className="comment-count">{comments.length}</span>
